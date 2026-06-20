@@ -31,7 +31,7 @@ Chart.register(
   LineElement,
   Tooltip,
   Title,
-  Legend,
+  Legend
 );
 
 function MemoryGame() {
@@ -147,8 +147,7 @@ function MemoryGame() {
       setRanks(userRanks?.data);
 
       const response = await getAllScores(token);
-      console.log(response);
-      setScores(response?.data);
+      setScores(response?.data?.map((v) => v.score));
     })();
   }, []);
 
@@ -242,10 +241,7 @@ function MemoryGame() {
             ))}
           </div>
           {gameState === 3 ? (
-            <Button
-              onClick={handlePlayAgain}
-              className="mt-4"
-            >
+            <Button onClick={handlePlayAgain} className="mt-4">
               Play Again
             </Button>
           ) : null}
@@ -255,22 +251,25 @@ function MemoryGame() {
             </Button>
           </div>
         </div>
-        {/* <div className="flex flex-1">
-          {scores.length > 10 ? (
+        {scores.length >= 10 && (
+          <div className="w-150 h-150 mr-10">
             <Line
-              labels={scores.map((_, i) => i + 1)}
-              data={
-                  datasets = {
+              options={{ responsive: true }}
+              data={{
+                labels: scores.map((_, i) => i + 1),
+                datasets: [
+                  {
                     label: "Scores",
-                    data: { scores },
-                    borderWidth: 2,
-                    borderColor: "lightpink",
-                    backgroundColor: "lightpink",
-                  }
-              }
+                    data: scores,
+                    borderWidth: 1,
+                    borderColor: "pink",
+                    backgroundColor: "pink",
+                  },
+                ],
+              }}
             />
-          ) : null}
-        </div> */}
+          </div>
+        )}
       </div>
     </>
   );
